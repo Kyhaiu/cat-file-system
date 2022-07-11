@@ -1,6 +1,24 @@
+#include <iostream>
+#include <string>
 #include "./shell.h"
 
-// Função que separa uma string em um vetor dado um separador
+/**
+ * @brief Limpa a tela (Console)
+ * 
+ * @return * void 
+ */
+void ClearScreen()
+{
+  std::cout << std::string( 100, '\n' );
+}
+
+/**
+ * @brief Função que separa uma string em uma lista de acordo com o separador
+ * 
+ * @param text Texto a ser separado
+ * @param char - Caractere separador
+ * @return Lista com os elementos separados de acordo com o separador.
+ */
 std::vector<std::string> split(const std::string& text, char sep)
 {
     std::vector<std::string> tokens;
@@ -18,6 +36,7 @@ std::vector<std::string> split(const std::string& text, char sep)
 
 // Construtor vazio da classe
 Shell::Shell(){
+  possibleCommands.push_back("cls");
   possibleCommands.push_back("cpin");
   possibleCommands.push_back("cpout");
   possibleCommands.push_back("exit");
@@ -60,21 +79,22 @@ void Shell::setArgs(std::vector<std::string> _args)
   args = _args;
 }
 
-// Realiza o parser do comando a ser executado
-// caso ele exista retorna true
-// caso o comando não exista retorna falso
+
+/**
+ * @brief Função que realiza a analise do comando e armazena o nome e os parâmetros.
+ * 
+ * @param command - Comando a ser analisado  
+ * @return Verdadeiro - Caso o comando seja válido
+ * @return Falso - Caso comando seja inválido
+ */
 bool Shell::parsedCommand(std::string command)
 {
   int s = -1;
-  for (int i = 0; i < command.size(); i++)
-  {
-    if(command.find(' ') != std::string::npos)
-    {
-      s = i;
-      break;
-    }
-  }
+  // Primeiro espaço representa o nome do comando
+  // a partir dele só tem argumentos
+  s = command.find(' ');
 
+  // Se s é maior que zero, significa que possui argumentos
   if (s > 0)
   {
     Shell::setCommandName(command.substr(0, s));
@@ -82,8 +102,9 @@ bool Shell::parsedCommand(std::string command)
   } 
   else 
   {
-    /// Caso não exista parâmetros 
+    /// Caso não exista argumentos 
     Shell::setCommandName(command);
+    // Cria uma lista vazia
     std::vector<std::string> emptyList;
     Shell::setArgs(emptyList);
   }
@@ -100,6 +121,11 @@ bool Shell::parsedCommand(std::string command)
   return false;
 }
 
+/**
+ * @brief Função que executa os comandos informados ao usuário. 
+ * 
+ * @return * void 
+ */
 void Shell::executeCommand() {
   std::cout << "Informe um comando" << std::endl;
   std::string commandLine;
@@ -118,7 +144,11 @@ void Shell::executeCommand() {
 
   std::string command = Shell::getCommandName();
 
-  if (command == "cpin")
+  if (command == "cls")
+  {
+    ClearScreen();
+  }
+  else  if (command == "cpin")
   {
     std::cout << "Executando o comando: " << command << std::endl;
   }
