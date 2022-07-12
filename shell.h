@@ -4,6 +4,8 @@
 #include <string>
 #include <iostream>
 #include <stdlib.h>
+#include "help.h"
+#include "./commands.h"
 
 class Shell
 {

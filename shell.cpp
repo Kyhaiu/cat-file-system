@@ -2,6 +2,7 @@
 #include <string>
 #include "./shell.h"
 
+
 /**
  * @brief Limpa a tela (Console)
  * 
@@ -36,17 +37,7 @@ std::vector<std::string> split(const std::string& text, char sep)
 
 // Construtor vazio da classe
 Shell::Shell(){
-  possibleCommands.push_back("cls");
-  possibleCommands.push_back("cpin");
-  possibleCommands.push_back("cpout");
-  possibleCommands.push_back("exit");
-  possibleCommands.push_back("format");
-  possibleCommands.push_back("help");
-  possibleCommands.push_back("ls");
-  possibleCommands.push_back("mkdir");
-  possibleCommands.push_back("mount");
-  possibleCommands.push_back("new");
-  possibleCommands.push_back("unmount");
+  possibleCommands = Commands::commands;
 }
 
 // Obtém o nome do comando a ser executado
@@ -143,6 +134,7 @@ void Shell::executeCommand() {
     std::cout << i << std::endl;
 
   std::string command = Shell::getCommandName();
+  std::vector<std::string> args = Shell::getArgs();
 
   if (command == "cls")
   {
@@ -168,7 +160,7 @@ void Shell::executeCommand() {
   }
   else if (command == "help")
   {
-    std::cout << "Executando o comando: " << command << std::endl;
+    Help* help = new Help(args[0]);
   }
   else if (command == "ls")
   {
